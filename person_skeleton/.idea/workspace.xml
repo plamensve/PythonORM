@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb93df08-7f91-4493-9120-c78cd32816dd" name="Changes" comment="" />
+    <list default="true" id="cb93df08-7f91-4493-9120-c78cd32816dd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2i0GCRDZs9ZItFmVd9G1lU3ecCi" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -19,14 +24,39 @@
   "keyToString": {
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/Users/sveto/OneDrive/Desktop/PythonORM",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/sveto/OneDrive/Desktop/PythonORM/migrations",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Django Server.person_skeleton">
     <configuration name="01. Person_Skeleton" type="Python.DjangoServer" factoryName="Django server">
       <module name="01. Person_Skeleton" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="localhost" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="person_skeleton" type="Python.DjangoServer" factoryName="Django server">
+      <module name="person_skeleton" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -67,6 +97,8 @@
       <option name="presentableId" value="Default" />
       <updated>1718619952906</updated>
       <workItem from="1718619953922" duration="140000" />
+      <workItem from="1718994816773" duration="12000" />
+      <workItem from="1718994853430" duration="10000" />
     </task>
     <servers />
   </component>
