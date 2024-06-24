@@ -5,9 +5,5 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import Person
+from main_app.models import Person, Item
 
-persons = Person.objects.all()
-
-for p in persons:
-    print(p.age)
