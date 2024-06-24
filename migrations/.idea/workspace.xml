@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="485aa23c-48db-49cd-a116-dfece3395222" name="Changes" comment="22.06.2024 - Migrations and admin panel setup" />
+    <list default="true" id="485aa23c-48db-49cd-a116-dfece3395222" name="Changes" comment="22.06.2024 - Migrations and admin panel setup">
+      <change afterPath="$PROJECT_DIR$/../ex_models_admin/ex_models_admin.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ex_models_admin/main_app/migrations/0004_eventregistration.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ex_models_admin/main_app/migrations/0005_movie.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ex_models_admin/main_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/../ex_models_admin/main_app/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ex_models_admin/main_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../ex_models_admin/main_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,27 +31,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Python.caller.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/sveto/OneDrive/Desktop/Django Basics/urls_and_views",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Python.caller.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/sveto/OneDrive/Desktop/PythonORM/ex_models_admin&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.caller">
     <configuration name="caller" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="migrations" />
@@ -119,6 +126,9 @@
       <workItem from="1719045219010" duration="641000" />
       <workItem from="1719047070305" duration="94000" />
       <workItem from="1719058276923" duration="51000" />
+      <workItem from="1719220123853" duration="13000" />
+      <workItem from="1719220424788" duration="14000" />
+      <workItem from="1719226198578" duration="16000" />
     </task>
     <task id="LOCAL-00001" summary="22.06.2024 - Migrations and admin panel setup">
       <option name="closed" value="true" />
