@@ -20,3 +20,6 @@ class Location(models.Model):
     population = models.PositiveIntegerField()
     description = models.TextField()
     is_capital = models.BooleanField(default=False)
+
+
+
