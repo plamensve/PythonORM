@@ -6,7 +6,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 from django.db import models
-from main_app.models import Pet, Artifact
+from main_app.models import Pet, Artifact, Location
 
 
 def create_pet(name: str, species: str):
@@ -53,7 +53,31 @@ def delete_all_artifacts():
     for a in artifact:
         a.delete()
 
+
 # print(create_artifact('Ancient Sword', 'Lost Kingdom', 500, 'A legendary sword with a rich history', True))
 # artifact_object = Artifact.objects.get(name='Ancient Sword')
 # rename_artifact(artifact_object, 'Ancient Shield')
 # print(artifact_object.name)
+
+
+def show_all_locations():
+    result = []
+    for i in Location.objects.all():
+        result.append(f"{i.name} has a population of {i.population}!")
+
+    return '\n'.join(result)
+
+
+def new_capital():
+    pass
+
+
+def get_capitals():
+    pass
+
+
+def delete_first_location():
+    pass
+
+
+print(show_all_locations())
