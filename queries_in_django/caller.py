@@ -130,6 +130,7 @@ def delete_review_by_id(n: int):
         r.save()
         return f"Review by {r.reviewer_name} was deleted"
 
+
 # print(delete_review_by_id(4))
 
 
@@ -145,6 +146,7 @@ def filter_authors_by_nationalities(nationality):
 
     return '\n'.join(result)
 
+
 # print("American authors:")
 # print(filter_authors_by_nationalities('American'))
 # print()
@@ -155,42 +157,35 @@ def filter_authors_by_nationalities(nationality):
 # print(filter_authors_by_nationalities(None))
 
 
+def filter_authors_by_birth_year(year_1, year_2):
+    author = Author.objects.filter(birth_date__year__range=(year_1, year_2)).order_by('-birth_date')
 
-def filter_authors_by_birth_year():
-    pass
+    result = []
+    for a in author:
+        result.append(f"{a.birth_date}: {a.first_name} {a.last_name}")
 
-
-
-
-
-
-
+    return '\n'.join(result)
 
 
+# print("Authors born between 1980 and 2000:")
+# print(filter_authors_by_birth_year(1980, 2000))
+# print()
+# print("Authors born between 1950 and 1960:")
+# print(filter_authors_by_birth_year(1950, 1960))
+# print()
+# print("Authors born between 2000 and 2010:")
+# print(filter_authors_by_birth_year(2000, 2010))
 
 
+def change_reviewer_name(name, replacer):
+    Review.objects.filter(reviewer_name=name).update(reviewer_name=replacer)
+    return Review.objects.all()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# print("Change Alice Johnson to A.J.:")
+# print(change_reviewer_name("Alice Johnson", "A.J."))
+# print()
+# print("Change Bob Wilson to Bobby W.:")
+# print(change_reviewer_name("Bob Wilson", "Bobby W."))
+# print()
+# print("Change A.J. to A. Johnson:")
+# print(change_reviewer_name("A.J.", "A. Johnson"))
