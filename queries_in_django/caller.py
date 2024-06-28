@@ -92,6 +92,7 @@ def find_books_by_genre_and_language(genre: str, language: str):
     books = Book.objects.filter(genre=genre, language=language)
     return books
 
+
 # print(find_books_by_genre_and_language("Romance", "English"))
 # print(find_books_by_genre_and_language("Poetry", "Spanish"))
 # print(find_books_by_genre_and_language("Mystery", "English"))
@@ -106,10 +107,57 @@ def find_authors_nationalities():
 
     return '\n'.join(result)
 
+
 # print(find_authors_nationalities())
 
+def order_books_by_year():
+    book = Book.objects.all().order_by('publication_year', 'title')
+    result = []
+
+    for b in book:
+        result.append(f"{b.publication_year} year: {b.title} by {b.author}")
+
+    return '\n'.join(result)
 
 
+# print(order_books_by_year())
+
+def delete_review_by_id(n: int):
+    review = Review.objects.filter(id=n)
+
+    for r in review:
+        r.delete()
+        r.save()
+        return f"Review by {r.reviewer_name} was deleted"
+
+# print(delete_review_by_id(4))
+
+
+def filter_authors_by_nationalities(nationality):
+    author = Author.objects.filter(nationality=nationality).order_by('first_name', 'last_name')
+
+    result = []
+    for a in author:
+        if a.biography is not None:
+            result.append(a.biography)
+        else:
+            result.append(f"{a.first_name} {a.last_name}")
+
+    return '\n'.join(result)
+
+# print("American authors:")
+# print(filter_authors_by_nationalities('American'))
+# print()
+# print("British authors:")
+# print(filter_authors_by_nationalities('British'))
+# print()
+# print("Authors with no nationalities:")
+# print(filter_authors_by_nationalities(None))
+
+
+
+def filter_authors_by_birth_year():
+    pass
 
 
 
