@@ -58,8 +58,21 @@ class HotelRoom(models.Model):
         return f"Deluxe room with number {self.room_number} costs {self.price_per_night}$ per night!"
 
 
+class CharacterChoice(models.TextChoices):
+    MAGE = 'M', 'Mage'
+    WARRIOR = 'W', 'Warrior'
+    ASSASSIN = 'A', 'Assassin'
+    SCOUT = 'S', 'Scout'
 
-
+class Character(models.Model):
+    name = models.CharField(max_length=100)
+    class_name = models.CharField(max_length=10, choices=CharacterChoice.choices)
+    level = models.PositiveIntegerField()
+    strength = models.PositiveIntegerField()
+    dexterity = models.PositiveIntegerField()
+    intelligence = models.PositiveIntegerField()
+    hit_points = models.PositiveIntegerField()
+    inventory = models.TextField()
 
 
 

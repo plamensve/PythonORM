@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 from django.db import models
-from main_app.models import Pet, Artifact, Location, Car, Task, HotelRoom
+from main_app.models import Pet, Artifact, Location, Car, Task, HotelRoom, Character
 
 
 def create_pet(name: str, species: str):
@@ -191,3 +191,102 @@ def delete_last_room():
     room = HotelRoom.objects.last()
     if not room.is_reserved:
         room.delete()
+
+
+def update_characters():
+    champs = Character.objects.all()
+
+    for c in champs:
+        if c.class_name == 'Mage':
+            c.level += 3
+            c.inventory -= 7
+        elif c.class_name == 'Warrior':
+            c.hit_points -= int(c.hit_points / 2)
+        elif c.class_name == 'Assassin' or c.class_name == 'Scout':
+            c.inventory = "The inventory is empty"
+
+        c.save()
+
+
+def fuse_characters(first_character: Character, second_character: Character):
+    if first_character.class_name in ['Mage', 'Scout']:
+        inventory = 'Bow of the Elven Lords, Amulet of Eternal Wisdom'
+    elif first_character.class_name in ['Warrior', 'Assassin']:
+        inventory = 'Dragon Scale Armor, Excalibur'
+    else:
+        inventory = 'Standard Inventory'
+
+    new_character = Character.objects.create(
+        name=first_character.name + ' ' + second_character.name,
+        class_name='Fusion',
+        level=(first_character.level + second_character.level) // 2,
+        strength=(first_character.strength + second_character.strength) * 1.2,
+        dexterity=(first_character.dexterity + second_character.dexterity) * 1.4,
+        intelligence=(first_character.intelligence + second_character.intelligence) * 1.5,
+        hit_points=(first_character.hit_points + second_character.hit_points),
+        inventory=inventory
+    )
+
+    deleted_characters1 = Character.objects.filter(name=first_character.name).delete()
+    deleted_characters2 = Character.objects.filter(name=second_character.name).delete()
+
+
+def grand_dexterity():
+    char = Character.objects.all()
+    for c in char:
+        c.dexterity = 30
+        c.save()
+
+
+def grand_intelligence():
+    char = Character.objects.all()
+    for c in char:
+        c.intelligence = 40
+        c.save()
+
+
+def grand_strength():
+    char = Character.objects.all()
+    for c in char:
+        c.strength = 50
+        c.save()
+
+
+def delete_characters():
+    char = Character.objects.all()
+    for c in char:
+        if c.inventory == "The inventory is empty":
+            c.delete()
+            c.save()
+
+
+# character1 = Character.objects.create(
+#     name='Gandalf',
+#     class_name='Mage',
+#     level=10,
+#     strength=15,
+#     dexterity=20,
+#     intelligence=25,
+#     hit_points=100,
+#     inventory='Staff of Magic, Spellbook',
+# )
+#
+# character2 = Character.objects.create(
+#     name='Hector',
+#     class_name='Warrior',
+#     level=12,
+#     strength=30,
+#     dexterity=15,
+#     intelligence=10,
+#     hit_points=150,
+#     inventory='Sword of Troy, Shield of Protection',
+# )
+#
+# fuse_characters(character1, character2)
+# fusion = Character.objects.filter(class_name='Fusion').get()
+#
+# print(fusion.name)
+# print(fusion.class_name)
+# print(fusion.level)
+# print(fusion.intelligence)
+# print(fusion.inventory)
