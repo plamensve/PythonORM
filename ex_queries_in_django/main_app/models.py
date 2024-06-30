@@ -60,3 +60,45 @@ class Workout(models.Model):
     difficulty = models.CharField(max_length=50)
     calories_burned = models.PositiveIntegerField()
     instructor = models.CharField(max_length=100)
+
+
+class ArtworkGallery(models.Model):
+    artist_name = models.CharField(max_length=100)
+    art_name = models.CharField(max_length=100)
+    rating = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
