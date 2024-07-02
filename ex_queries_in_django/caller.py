@@ -6,7 +6,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import ArtworkGallery, Laptop, ChessPlayer
+from main_app.models import ArtworkGallery, Laptop, ChessPlayer, Meal, Dungeon, Workout
 from typing import List
 
 
@@ -187,3 +187,187 @@ def grand_chess_title_regular_player() -> None:
 #
 # # Check that the players are deleted
 # print("Number of Chess Players after deletion:", ChessPlayer.objects.count())
+
+def set_new_chefs():
+    Meal.objects.filter(meal_type='Breakfast').update(chef='Gordon Ramsay')
+    Meal.objects.filter(meal_type='Lunch').update(chef='Julia Child')
+    Meal.objects.filter(meal_type='Dinner').update(chef='Jamie Oliver')
+    Meal.objects.filter(meal_type='Snack').update(chef='Thomas Keller')
+
+
+def set_new_preparation_times():
+    Meal.objects.filter(meal_type='Breakfast').update(preparation_time='10 minutes')
+    Meal.objects.filter(meal_type='Lunch').update(preparation_time='12 minutes')
+    Meal.objects.filter(meal_type='Dinner').update(preparation_time='15 minutes')
+    Meal.objects.filter(meal_type='Snack').update(preparation_time='5 minutes')
+
+
+def update_low_calorie_meals():
+    Meal.objects.filter(meal_type__in=['Breakfast', 'Dinner']).update(calories=400)
+
+
+def update_high_calorie_meals():
+    Meal.objects.filter(meal_type__in=['Lunch', 'Snack']).update(calories=700)
+
+
+def delete_lunch_and_snack_meals():
+    Meal.objects.filter(meal_type__in=['Lunch', 'Snack']).delete()
+
+
+def show_hard_dungeons():
+    dungeons = Dungeon.objects.filter(difficulty='Hard').order_by('location')
+
+    result = []
+    for d in dungeons:
+        result.append(f"{d.name} is guarded by {d.boss_name} who has {d.boss_health} health points!")
+
+    return '\n'.join(result)
+
+
+def bulk_create_dungeons(args: List[Dungeon]):
+    Dungeon.objects.bulk_create(args)
+
+
+def update_dungeon_names():
+    Dungeon.objects.filter(difficulty='Easy').update(name="The Erased Thombs")
+    Dungeon.objects.filter(difficulty='Medium').update(name="The Coral Labyrinth")
+    Dungeon.objects.filter(difficulty='Hard').update(name="The Lost Haunt")
+
+
+def update_dungeon_bosses_health():
+    Dungeon.objects.exclude(difficulty='Easy').update(boss_health=500)
+
+
+def update_dungeon_recommended_levels():
+    Dungeon.objects.filter(difficulty='Easy').update(recommended_level=25)
+    Dungeon.objects.filter(difficulty='Medium').update(recommended_level=50)
+    Dungeon.objects.filter(difficulty='Hard').update(recommended_level=75)
+
+
+def update_dungeon_rewards():
+    Dungeon.objects.filter(boss_health=500).update(reward="1000 Gold")
+    Dungeon.objects.filter(location__startswith='E').update(reward="New dungeon unlocked")
+    Dungeon.objects.filter(location__endswith='s').update(reward="Dragonheart Amulet")
+
+
+def set_new_locations():
+    Dungeon.objects.filter(recommended_level=25).update(location="Enchanted Maze")
+    Dungeon.objects.filter(recommended_level=50).update(location="Grimstone Mines")
+    Dungeon.objects.filter(recommended_level=75).update(location="Shadowed Abyss")
+
+
+# # Create two instances
+# dungeon1 = Dungeon(
+#     name="Dungeon 1",
+#     boss_name="Boss 1",
+#     boss_health=1000,
+#     recommended_level=75,
+#     reward="Gold",
+#     location="Eternal Hell",
+#     difficulty="Hard",
+# )
+#
+# dungeon2 = Dungeon(
+#     name="Dungeon 2",
+#     boss_name="Boss 2",
+#     boss_health=400,
+#     recommended_level=25,
+#     reward="Experience",
+#     location="Crystal Caverns",
+#     difficulty="Easy",
+# )
+#
+# # Bulk save the instances
+# bulk_create_dungeons([dungeon1, dungeon2])
+#
+# # Update boss's health
+# update_dungeon_bosses_health()
+#
+# # Show hard dungeons
+# hard_dungeons_info = show_hard_dungeons()
+# print(hard_dungeons_info)
+#
+# # Change dungeon names based on difficulty
+# update_dungeon_names()
+# dungeons = Dungeon.objects.order_by('boss_health')
+# print(dungeons[0].name)
+# print(dungeons[1].name)
+#
+# # Change the dungeon rewards
+# update_dungeon_rewards()
+# dungeons = Dungeon.objects.order_by('boss_health')
+# print(dungeons[0].reward)
+# print(dungeons[1].reward)
+
+def show_workouts() -> str:
+    workouts = Workout.objects.filter(workout_type__in=['Calisthenics', 'CrossFit']).order_by('id')
+
+    result = []
+
+    for w in workouts:
+        result.append(f"{w.name} from {w.workout_type} type has {w.difficulty} difficulty!")
+
+    return '\n'.join(result)
+
+
+def get_high_difficulty_cardio_workouts() -> str:
+    workouts = Workout.objects.filter(workout_type='Cardio').filter(difficulty='High').order_by('instructor')
+
+    result = [w for w in workouts]
+
+    return result
+
+
+def set_new_instructors():
+    Workout.objects.filter(workout_type='Cardio').update(instructor='John Smith')
+    Workout.objects.filter(workout_type='Strength').update(instructor='Michael Williams')
+    Workout.objects.filter(workout_type='Yoga').update(instructor='Emily Johnson')
+    Workout.objects.filter(workout_type='CrossFit').update(instructor='Sarah Davis')
+    Workout.objects.filter(workout_type='Calisthenics').update(instructor='Chris Heria')
+
+
+def set_new_duration_times():
+    Workout.objects.filter(instructor='John Smith').update(duration='15 minutes')
+    Workout.objects.filter(instructor='Sarah Davis').update(duration='30 minutes')
+    Workout.objects.filter(instructor='Chris Heria').update(duration='45 minutes')
+    Workout.objects.filter(instructor='Michael Williams').update(duration='1 hour')
+    Workout.objects.filter(instructor='Emily Johnson').update(duration='1 hour and 30 minutes')
+
+
+def delete_workouts():
+    Workout.objects.exclude(workout_type__in=['Strength', 'Calisthenics']).delete()
+
+
+# Create two Workout instances
+# workout1 = Workout.objects.create(
+#     name="Push-Ups",
+#     workout_type="Calisthenics",
+#     duration="10 minutes",
+#     difficulty="Intermediate",
+#     calories_burned=200,
+#     instructor="Bob"
+# )
+#
+# workout2 = Workout.objects.create(
+#     name="Running",
+#     workout_type="Cardio",
+#     duration="30 minutes",
+#     difficulty="High",
+#     calories_burned=400,
+#     instructor="Lilly"
+# )
+#
+# # Run the functions
+# print(show_workouts())
+#
+# high_difficulty_cardio_workouts = get_high_difficulty_cardio_workouts()
+# for workout in high_difficulty_cardio_workouts:
+#     print(f"{workout.name} by {workout.instructor}")
+#
+# set_new_instructors()
+# for workout in Workout.objects.all():
+#     print(f"Instructor: {workout.instructor}")
+#
+# set_new_duration_times()
+# for workout in Workout.objects.all():
+#     print(f"Duration: {workout.duration}")
