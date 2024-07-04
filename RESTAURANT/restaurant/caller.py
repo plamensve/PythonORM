@@ -38,36 +38,27 @@ def make_an_order(first_name, last_name, product):
     client_order = Order.objects.create(date_time=datetime.now(), client_id=order[0], menu_id=order[1])
 
 
-def delete_order(client_id, menu_id):
-    order = Order.objects.filter(client_id=client_id).filter(menu_id=menu_id).delete()
-
-
 def order_information(client_order_id):
-    order_info = Order.objects.all()
+    order_info = Order.objects.filter(client_id=client_order_id)
 
-    order_list_info = []
+    client_meal_info = []
+
     for i in order_info:
-        if i.client_id == client_order_id:
-            order_list_info.append(i.client_id)
-            order_list_info.append(i.menu_id)
+        result = (i.client_id, i.menu_id)
+        client_meal_info.append(result)
 
-    client = Client.objects.filter(id=order_list_info[0])
-    product = Menu.objects.filter(id=order_list_info[1])
-    order_list_info.clear()
+    msg = []
+    for x in client_meal_info:
+        client = Client.objects.filter(id=x[0])
+        meal = Menu.objects.filter(id=x[1])
 
-    result = []
+        for c in client:
+            for m in meal:
+                msg.append(f"Order by {c.first_name} {c.last_name} for {m.name}")
 
-    for c in client:
-        result.append(c.first_name)
-        result.append(c.last_name)
-
-    for p in product:
-        result.append(p.name)
-        result.append(p.price)
-
-    return result
+    return '\n'.join(msg)
 
 
-# make_an_order('Kameliya', 'Todorova', 'Beef')
-# print(order_information(8))
+# make_an_order('Anton', 'Jordanov', 'Pasta')
+print(order_information(9))
 # delete_order(8, 7)
