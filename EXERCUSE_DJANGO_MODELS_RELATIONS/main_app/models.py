@@ -18,3 +18,52 @@ class Song(models.Model):
 class Artist(models.Model):
     name = models.CharField(max_length=100, unique=True)
     songs = models.ManyToManyField(Song, related_name='artists')
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+
+class Review(models.Model):
+    description = models.TextField(max_length=200)
+    rating = models.PositiveSmallIntegerField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviewss')
+
+
+class Driver(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+
+
+class DrivingLicense(models.Model):
+    license_number = models.CharField(max_length=10)
+    issue_date = models.DateField()
+    driver = models.OneToOneField(Driver, on_delete=models.CASCADE, related_name='license')
+
+
+class Owner(models.Model):
+    name = models.CharField(max_length=50)
+
+
+class Car(models.Model):
+    model = models.CharField(max_length=50)
+    year = models.PositiveIntegerField()
+    owner = models.ForeignKey(Owner, related_name='cars', null=True, blank=True, on_delete=models.CASCADE)
+
+class Registration(models.Model):
+    registration_number = models.CharField(max_length=10, unique=True)
+    registration_date = models.DateField(null=True, blank=True)
+    car = models.OneToOneField(Car, on_delete=models.CASCADE, null=True, blank=True, related_name='registration')
+
+
+
+
+
+
+
+
+
+
+
+
+
