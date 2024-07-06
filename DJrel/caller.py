@@ -70,7 +70,7 @@ def add_song_to_artist(artist_name: str, song_title: str):
 
 
 def get_songs_by_artist(artist_name: str):
-    return Artist.objects.get(name=artist_name).songs.all().order_by('id')
+    return Artist.objects.get(name=artist_name).songs.all().order_by('-id')
 
 
 def remove_song_from_artist(artist_name: str, song_title: str):
