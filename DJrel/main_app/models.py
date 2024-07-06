@@ -23,3 +23,38 @@ class Book(models.Model):
         to=Author,
         on_delete=models.CASCADE,
     )
+
+
+class Song(models.Model):
+    title = models.CharField(max_length=100)
+
+class Artist(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    songs = models.ManyToManyField(Song, related_name='artists')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
