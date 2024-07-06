@@ -33,7 +33,13 @@ class Artist(models.Model):
     songs = models.ManyToManyField(Song, related_name='artists')
 
 
+class Product(models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
+class Review(models.Model):
+    description = models.TextField(max_length=200)
+    rating = models.PositiveSmallIntegerField()
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
 
 
 
