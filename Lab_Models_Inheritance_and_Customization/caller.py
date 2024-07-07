@@ -21,3 +21,26 @@ django.setup()
 # print(f"{veterinarian_from_db.first_name} {veterinarian_from_db.last_name} is a Veterinarian.")
 
 
+# from main_app.models import ZooDisplayAnimal
+#
+# is_proxy = ZooDisplayAnimal._meta.proxy
+#
+# if is_proxy:
+#     print("ZooDisplayAnimal is a proxy model.")
+# else:
+#     print("ZooDisplayAnimal is not a proxy model.")
+#
+# from main_app.models import ZooKeeper
+#
+# zookeeper = ZooKeeper(first_name="John", last_name="Doe", phone_number="0123456789", specialty="Birds")
+# zookeeper.full_clean()
+# zookeeper.save()
+
+# from main_app.models import ZooDisplayAnimal
+#
+# # Keep the data from the previous exercises, so you can reuse it
+#
+# all_animals_info = ZooDisplayAnimal.objects.all()
+# for a in all_animals_info:
+#     print(a.display_info())
+#     print(a.is_endangered())
