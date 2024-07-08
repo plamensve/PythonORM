@@ -1,5 +1,14 @@
+from datetime import timedelta, date
+
 from django.core.exceptions import ValidationError
 from django.db import models
+
+
+class BooleanChoiceField(models.BooleanField):
+    def __init__(self, *args, **kwargs):
+        kwargs['choices'] = ((True, 'Available'), (False, 'Not Available'))
+        kwargs['default'] = True
+        super().__init__(*args, **kwargs)
 
 
 class Animal(models.Model):
@@ -7,6 +16,11 @@ class Animal(models.Model):
     species = models.CharField(max_length=100)
     birth_date = models.DateField()
     sound = models.CharField(max_length=100)
+
+    @property
+    def age(self):
+        age = date.today() - self.birth_date
+        return age.days // 365
 
 
 class Mammal(Animal):
@@ -47,6 +61,7 @@ class ZooKeeper(Employee):
 
 class Veterinarian(Employee):
     license_number = models.CharField(max_length=10)
+    availability = BooleanChoiceField()
 
 
 class ZooDisplayAnimal(Animal):
