@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -88,6 +89,148 @@ class Message(models.Model):
         )
         message.save()
         return message
+
+
+class StudentIDField(models.PositiveIntegerField):
+    def to_python(self, value):
+        try:
+            return int(value)
+        except ValueError:
+            raise ValueError("Invalid input for student ID")
+
+    def get_prep_value(self, value):
+        cleaned_data = self.to_python(value)
+
+        if cleaned_data <= 0:
+            raise ValidationError('ID cannot be less than or equal to zero')
+
+        return cleaned_data
+
+
+class MaskedCreditCardField(models.CharField):
+    pass
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    student_id = StudentIDField()
+
+
+class CreditCard(models.Model):
+    card_owner = models.CharField(max_length=100)
+    card_number = MaskedCreditCardField(max_length=20)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
