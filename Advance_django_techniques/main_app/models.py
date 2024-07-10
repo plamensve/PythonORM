@@ -51,27 +51,3 @@ class RestaurantReview(models.Model):
         unique_together = ['reviewer_name', 'restaurant']
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
