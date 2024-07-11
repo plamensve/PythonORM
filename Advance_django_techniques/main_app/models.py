@@ -1,8 +1,18 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator, MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import Index
 
 from main_app.validators import validate_menu_categories
+
+
+class ReviewMixin(models.Model):
+    review_content = models.TextField()
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+
+    class Meta:
+        abstract = True
+        ordering = ['-rating']
 
 
 class Restaurant(models.Model):
@@ -38,16 +48,41 @@ class Menu(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
 
-class RestaurantReview(models.Model):
+class RestaurantReview(ReviewMixin):
     reviewer_name = models.CharField(max_length=100)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    review_content = models.TextField()
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
 
-    class Meta:
-        ordering = ('-rating',)
+    # review_content = models.TextField()
+    # rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+
+    class Meta(ReviewMixin.Meta):
+        abstract = True
         verbose_name = 'Restaurant Review'
         verbose_name_plural = 'Restaurant Reviews'
         unique_together = ['reviewer_name', 'restaurant']
 
 
+class RegularRestaurantReview(RestaurantReview):
+    pass
+
+
+class FoodCriticRestaurantReview(RestaurantReview):
+    food_critic_cuisine_area = models.CharField(max_length=100)
+
+    class Meta(RestaurantReview.Meta):
+        verbose_name = 'Food Critic Review'
+        verbose_name_plural = 'Food Critic Reviews'
+
+
+class MenuReview(ReviewMixin):
+    reviewer_name = models.CharField(max_length=100)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+
+    # review_content = models.TextField()
+    # rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
+
+    class Meta(ReviewMixin.Meta):
+        verbose_name = "Menu Review"
+        verbose_name_plural = "Menu Reviews"
+        unique_together = ["reviewer_name", "menu"]
+        indexes = [Index(fields=['menu', ], name="main_app_menu_review_menu_id")]
