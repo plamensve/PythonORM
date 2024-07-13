@@ -10,8 +10,7 @@ django.setup()
 
 # Import your models
 from main_app.models import Product, Category, Customer, Order, OrderProduct
-from django.db.models import Count, Avg, Sum
-
+from django.db.models import Count, Avg, Sum, F, Q
 
 # # Create and run queries
 # def add_records_to_database():
@@ -90,13 +89,33 @@ from django.db.models import Count, Avg, Sum
 #
 # print(product_quantity_ordered())
 
-def product_quantity_ordered():
+# def product_quantity_ordered():
+#     result = []
+#     products = Product.objects.annotate(total=Sum('orderproduct__quantity')).values('name', 'total').order_by('-total')
+#     for p in products:
+#         if p['total'] is not None:
+#             result.append(f"Quantity ordered of {p['name']}: {p['total']}")
+#     return '\n'.join(result)
+#
+#
+# print(product_quantity_ordered())
+
+
+"""
+"Order ID: {order_id1}, Customer: {customer_username1}
+- Product: {product_name1}, Category: {category_name1}
+"""
+
+
+def ordered_products_per_customer():
+    orders = Order.objects.prefetch_related('orderproduct_set__product__category').order_by('id')
     result = []
-    products = Product.objects.annotate(total=Sum('orderproduct__quantity')).values('name', 'total').order_by('-total')
-    for p in products:
-        if p['total'] is not None:
-            result.append(f"Quantity ordered of {p['name']}: {p['total']}")
+    for order in orders:
+        result.append(f"Order ID: {order.id}, Customer: {order.customer.username}")
+        for ordered_product in order.orderproduct_set.all():
+            result.append(
+                f"- Product: {ordered_product.product.name}, Category: {ordered_product.product.category.name}")
     return '\n'.join(result)
 
 
-print(product_quantity_ordered())
+# print(ordered_products_per_customer())
