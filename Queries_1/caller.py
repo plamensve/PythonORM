@@ -7,7 +7,8 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import Author, Book, Artist, Song, Product, Review, Driver, DrivingLicense
+from main_app.models import Author, Book, Artist, Song, Product, Review, Driver, DrivingLicense, Owner, Registration, \
+    Car
 
 
 def show_all_authors_with_their_books():
@@ -94,6 +95,29 @@ def get_drivers_with_expired_licenses(due_date: date):
             if license_expire > due_date:
                 result.append(driver)
     return result
+
+
+def register_car_by_owner(owner: Owner):
+    registration_object = Registration.objects.filter(car__isnull=True).first()
+    car_object = Car.objects.filter(registration__isnull=True).first()
+
+    car_object.owner = owner
+    car_object.save()
+
+    registration_object.registration_date = date.today()
+    registration_object.car = car_object
+
+    registration_object.save()
+
+    return (f"Successfully registered "
+            f"{car_object.model} "
+            f"to {owner.name} "
+            f"with registration number {registration_object.registration_number}.")
+
+
+
+
+
 
 
 
