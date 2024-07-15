@@ -39,6 +39,7 @@ class VideoGame(models.Model):
     rating = models.DecimalField(max_digits=2, decimal_places=1, validators=[rating_validator])
 
     objects = VideoGameManager()
+
     def __str__(self):
         return self.title
 
@@ -53,19 +54,19 @@ class Invoice(models.Model):
 
     @staticmethod
     def get_invoices_with_prefix(prefix: str):
-        invoice_object = Invoice.objects.filter(invoice_number__startswith=prefix)
+        invoice_object = Invoice.objects.select_related('billing_info').filter(invoice_number__startswith=prefix)
 
         return invoice_object
 
     @staticmethod
     def get_invoices_sorted_by_number():
-        invoice_object = Invoice.objects.all().order_by('invoice_number')
+        invoice_object = Invoice.objects.all().select_related('billing_info').order_by('invoice_number')
 
         return invoice_object
 
     @staticmethod
     def get_invoice_with_billing_info(invoice_number: str):
-        invoice_object = Invoice.objects.get(invoice_number=invoice_number)
+        invoice_object = Invoice.objects.select_related('billing_info').get(invoice_number=invoice_number)
 
         return invoice_object
 
@@ -80,11 +81,16 @@ class Project(models.Model):
     description = models.TextField()
     technologies_used = models.ManyToManyField(Technology, related_name='projects')
 
+    def get_programmers_with_technologies(self):
+        return self.programmer.prefetch_related('projects__technologies_used')
+
 
 class Programmer(models.Model):
     name = models.CharField(max_length=100)
-    projects = models.ManyToManyField(Project, related_name='programmers')
+    projects = models.ManyToManyField(Project, related_name='programmer')
 
+    def get_projects_with_technologies(self):
+        return self.projects.prefetch_related('technologies_used')
 
 class Task(models.Model):
     PRIORITIES = (
