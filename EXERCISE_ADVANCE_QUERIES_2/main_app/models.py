@@ -1,6 +1,7 @@
 from django.db import models
 
-from main_app.managers import RealEstateListingManager
+from main_app.managers import RealEstateListingManager, VideoGameManager
+from main_app.validators import rating_validator, release_year_validator
 
 
 # Create your models here.
@@ -22,6 +23,7 @@ class RealEstateListing(models.Model):
 
     objects = RealEstateListingManager()
 
+
 class VideoGame(models.Model):
     GENRE_CHOICES = [
         ('Action', 'Action'),
@@ -33,9 +35,10 @@ class VideoGame(models.Model):
 
     title = models.CharField(max_length=100)
     genre = models.CharField(max_length=100, choices=GENRE_CHOICES)
-    release_year = models.PositiveIntegerField()
-    rating = models.DecimalField(max_digits=2,decimal_places=1)
+    release_year = models.PositiveIntegerField(validators=[release_year_validator])
+    rating = models.DecimalField(max_digits=2, decimal_places=1, validators=[rating_validator])
 
+    objects = VideoGameManager()
     def __str__(self):
         return self.title
 
@@ -47,6 +50,24 @@ class BillingInfo(models.Model):
 class Invoice(models.Model):
     invoice_number = models.CharField(max_length=20, unique=True)
     billing_info = models.OneToOneField(BillingInfo, on_delete=models.CASCADE)
+
+    @staticmethod
+    def get_invoices_with_prefix(prefix: str):
+        invoice_object = Invoice.objects.filter(invoice_number__startswith=prefix)
+
+        return invoice_object
+
+    @staticmethod
+    def get_invoices_sorted_by_number():
+        invoice_object = Invoice.objects.all().order_by('invoice_number')
+
+        return invoice_object
+
+    @staticmethod
+    def get_invoice_with_billing_info(invoice_number: str):
+        invoice_object = Invoice.objects.get(invoice_number=invoice_number)
+
+        return invoice_object
 
 
 class Technology(models.Model):
