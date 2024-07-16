@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
+
 from django.db import models
+from django.db.models import Q, F
 
 from main_app.managers import RealEstateListingManager, VideoGameManager
 from main_app.validators import rating_validator, release_year_validator
@@ -92,6 +95,7 @@ class Programmer(models.Model):
     def get_projects_with_technologies(self):
         return self.projects.prefetch_related('technologies_used')
 
+
 class Task(models.Model):
     PRIORITIES = (
         ('Low', 'Low'),
@@ -106,6 +110,32 @@ class Task(models.Model):
     creation_date = models.DateField()
     completion_date = models.DateField()
 
+    @staticmethod
+    def ongoing_high_priority_tasks():
+        task = Task.objects.filter(
+            Q(priority='High') & Q(is_completed=False) & Q(completion_date__gt=F('creation_date')
+        ))
+        return task
+
+    @classmethod
+    def completed_mid_priority_tasks(cls):
+        task = Task.objects.filter(
+            Q(priority='Medium') & Q(is_completed=True)
+        )
+        return task
+
+    @classmethod
+    def search_tasks(cls, query: str):
+        contain_the_query = Task.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        return contain_the_query
+
+    @classmethod
+    def recent_completed_tasks(cls, days: int):
+        tasks = Task.objects.filter(
+            is_completed=True,
+            completion_date__gte=F('creation_date') - timedelta(days=days)
+        )
+        return tasks
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)

@@ -1,14 +1,14 @@
 import os
-from pprint import pprint
-
 import django
-from django.db import connection
 
 # Set up Django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import RealEstateListing, VideoGame, Invoice, BillingInfo, Technology, Project, Programmer
+from main_app.models import RealEstateListing, VideoGame, Invoice, BillingInfo, Technology, Project, Programmer, Task
+from datetime import date
+from pprint import pprint
+from django.db import connection
 
 # # Run the 'by_property_type' method
 # house_listings = RealEstateListing.objects.by_property_type('House')
@@ -110,27 +110,107 @@ from main_app.models import RealEstateListing, VideoGame, Invoice, BillingInfo, 
 # programmer1.projects.add(project1, project2)
 # programmer2.projects.add(project1)
 
-# Execute the "get_programmers_with_technologies" method for a specific project
-specific_project = Project.objects.get(name="Web App Project")
-programmers_with_technologies = specific_project.get_programmers_with_technologies()
+# # Execute the "get_programmers_with_technologies" method for a specific project
+# specific_project = Project.objects.get(name="Web App Project")
+# programmers_with_technologies = specific_project.get_programmers_with_technologies()
+#
+# # Iterate through the related programmers and technologies
+# for programmer in programmers_with_technologies:
+#     print(f"Programmer: {programmer.name}")
+#     for technology in programmer.projects.get(name="Web App Project").technologies_used.all():
+#         print(f"- Technology: {technology.name}")
+#
+# # Execute the "get_projects_with_technologies" method for a specific programmer
+# specific_programmer = Programmer.objects.get(name="Alice")
+# projects_with_technologies = specific_programmer.get_projects_with_technologies()
+#
+# # Iterate through the related projects and technologies
+# for project in projects_with_technologies:
+#     print(f"Project: {project.name} for {specific_programmer.name}")
+#     for technology in project.technologies_used.all():
+#         print(f"- Technology: {technology.name}")
+#
+# pprint(connection.queries)
 
-# Iterate through the related programmers and technologies
-for programmer in programmers_with_technologies:
-    print(f"Programmer: {programmer.name}")
-    for technology in programmer.projects.get(name="Web App Project").technologies_used.all():
-        print(f"- Technology: {technology.name}")
 
-# Execute the "get_projects_with_technologies" method for a specific programmer
-specific_programmer = Programmer.objects.get(name="Alice")
-projects_with_technologies = specific_programmer.get_projects_with_technologies()
+#------------------------------------------------------------------------------------------------#
 
-# Iterate through the related projects and technologies
-for project in projects_with_technologies:
-    print(f"Project: {project.name} for {specific_programmer.name}")
-    for technology in project.technologies_used.all():
-        print(f"- Technology: {technology.name}")
+# # Create task instances with custom creation dates
+# task1 = Task(
+#     title="Task 1",
+#     description="Description for Task 1",
+#     priority="High",
+#     creation_date=date(2023, 1, 15),
+#     completion_date=date(2023, 1, 25)
+# )
+#
+# task2 = Task(
+#     title="Task 2",
+#     description="Description for Task 2",
+#     priority="Medium",
+#     is_completed=True,
+#     creation_date=date(2023, 2, 1),
+#     completion_date=date(2023, 2, 10)
+# )
+#
+# task3 = Task(
+#     title="Task 3",
+#     description="Description for Task 3",
+#     priority="Hard",
+#     is_completed=True,
+#     creation_date=date(2023, 1, 15),
+#     completion_date=date(2023, 1, 20)
+# )
+#
+# # Save the tasks to the database
+# task1.save()
+# task2.save()
+# task3.save()
 
-pprint(connection.queries)
+
+# # Now, you can run the defined methods
+#
+# # 1. Get ongoing high-priority tasks
+# ongoing_high_priority = Task.ongoing_high_priority_tasks()
+# print("Ongoing High Priority Tasks:")
+# for task in ongoing_high_priority:
+#     print('- ' + task.title)
+#
+# # 2. Get completed medium-priority tasks
+# completed_mid_priority = Task.completed_mid_priority_tasks()
+# print("Completed Medium Priority Tasks:")
+# for task in completed_mid_priority:
+#     print('- ' + task.title)
+#
+# # 3. Search for tasks based on a query
+# search_results = Task.search_tasks("Task 3")
+# print("Search Results:")
+# for task in search_results:
+#     print('- ' + task.title)
+#
+# # 4. Get recent completed tasks
+# recent_completed = Task.recent_completed_tasks(days=5)
+# print("Recent Completed Tasks:")
+# for task in recent_completed:
+#     print('- ' + task.title)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
