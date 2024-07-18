@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+
 from main_app.models import Actor, Movie, Director
 
 
@@ -9,6 +10,7 @@ class DirectorAdmin(admin.ModelAdmin):
     list_filter = ('years_of_experience',)
     search_fields = ('full_name', 'nationality')
     search_help_text = "Search by director's full name or nationality"
+
 
 
 @admin.register(Actor)

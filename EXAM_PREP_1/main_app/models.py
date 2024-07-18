@@ -1,6 +1,7 @@
 from django.core import validators
 from django.db import models
 
+from main_app.manager import DirectorManager
 from main_app.mixins import LastUpdatedMixin, IsAwardedMixin
 
 
@@ -15,8 +16,11 @@ class BaseModel(models.Model):
     def __str__(self):
         return self.full_name
 
+
 class Director(BaseModel):
     years_of_experience = models.SmallIntegerField(validators=[validators.MinValueValidator(0)], default=0)
+
+    objects = DirectorManager()
 
 
 class Actor(BaseModel, LastUpdatedMixin, IsAwardedMixin):
