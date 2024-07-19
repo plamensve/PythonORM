@@ -6,7 +6,7 @@ from django.db.models import Q, Count, Max, Avg
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import Director, Actor
+from main_app.models import Director, Actor, Movie
 
 
 def get_directors(search_name=None, search_nationality=None):
@@ -65,4 +65,38 @@ def get_top_actor():
 
     return f"Top Actor: {actor.full_name}, starring in movies: {movies}, " \
            f"movies average rating: {actor.movies_avg_rating:.1f}"
+
+
+def get_actors_by_movies_count():
+    actors = Actor.objects.annotate(num_of_movies=Count('actor_movies')
+                                    ).order_by('-num_of_movies', 'full_name')[:3]
+
+    if not actors or not actors[0].num_movies:
+        return ""
+
+    result = []
+    for actor in actors:
+        result.append(f"{actor.full_name}, participated in {actor.num_movies} movies")
+
+    return '\n'.join(result)
+
+
+def get_top_rated_awarded_movie():
+    top_movie = Movie.objects\
+        .select_related('starring_actor')\
+        .prefetch_related('actors') \
+        .filter(is_awarded=True) \
+        .order_by('-rating', 'title') \
+        .first()
+
+    if top_movie is None:
+        return ""
+
+    starring_actor = top_movie.starring_actor.full_name if top_movie.starring_actor else "N/A"
+
+    participating_actors = top_movie.actors.order_by('full_name').values_list('full_name', flat=True)
+    cast = ", ".join(participating_actors)
+
+    return f"Top rated awarded movie: {top_movie.title}, rating: {top_movie.rating:.1f}. " \
+           f"Starring actor: {starring_actor}. Cast: {cast}."
 
