@@ -1,5 +1,7 @@
 from django.db import models
 
+from main_app.custom_manager import ProductManager
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -15,6 +17,7 @@ class Product(models.Model):
     def __str__(self):
         return f"{self.category.name}: {self.name}"
 
+    objects = ProductManager()
 
 class Customer(models.Model):
     username = models.CharField(max_length=50, unique=True)
