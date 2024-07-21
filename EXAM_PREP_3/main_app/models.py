@@ -41,38 +41,35 @@ class DrivingLicense(models.Model):
     driver = models.OneToOneField(Driver, on_delete=models.CASCADE, related_name='license')
 
 
+class Owner(models.Model):
+    name = models.CharField(50)
 
 
+class Car(models.Model):
+    model = models.CharField(
+        max_length=50)
+
+    year = models.PositiveIntegerField()
+    owner = models.ForeignKey(
+        Owner,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='cars')
 
 
+class Registration(models.Model):
+    registration_number = models.CharField(
+        max_length=10,
+        unique=True)
 
+    registration_date = models.DateField(
+        null=True,
+        blank=True)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    car = models.OneToOneField(
+        Car,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='registration')
