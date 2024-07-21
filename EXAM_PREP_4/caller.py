@@ -1,4 +1,5 @@
 import os
+from decimal import Decimal
 
 import django
 
@@ -39,4 +40,26 @@ def ordered_products_per_customer():
     return '\n'.join(result)
 
 
-print(ordered_products_per_customer())
+def filter_products():
+    products = Product.objects.filter(price__gt=3.00, is_available=True).order_by('-price', 'name')
+
+    result = []
+    for product in products:
+        result.append(f"{product.name}: {product.price}lv.")
+
+    return '\n'.join(result)
+
+
+def give_discount():
+    products = Product.objects.filter(price__gt=3.00, is_available=True).order_by('-price', 'name')
+    for p in products:
+        p.price *= Decimal(0.7)
+        p.save()
+
+    result = []
+    all_products = Product.objects.all().filter(is_available=True).order_by('-price', 'name')
+    for p in all_products:
+        result.append(f"{p.name}: {p.price}lv.")
+
+    return '\n'.join(result)
+
