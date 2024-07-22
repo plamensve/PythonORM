@@ -6,7 +6,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 from main_app.models import Author, Article, Review
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Avg
 
 
 def get_authors(search_name=None, search_email=None):
@@ -53,3 +53,26 @@ def get_top_reviewer():
         return ''
 
     return f"Top Reviewer: {author.full_name} with {author.number_of_reviews} published reviews."
+
+
+def get_latest_article():
+    article = (Article.objects.all()
+               .prefetch_related('authors')
+               .annotate(
+                   number_of_reviews=Count('review'),
+                   avg_rating=Avg('review__rating')
+               )
+               .order_by('-published_on')
+               .first())
+
+    if not article:
+        return ''
+
+    article_authors = [a.full_name for a in article.authors.all().order_by('full_name')]
+
+    avg_rating = article.avg_rating if article.number_of_reviews > 0 else 0
+
+    return (f"The latest article is: {article.title}. "
+            f"Authors: {', '.join(article_authors)}. "
+            f"Reviewed: {article.number_of_reviews} times. "
+            f"Average Rating: {avg_rating:.2f}.")
