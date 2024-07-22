@@ -1,4 +1,6 @@
 import os
+from datetime import date
+
 import django
 
 
@@ -7,7 +9,10 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import RealEstateListing, VideoGame, BillingInfo, Invoice
+from main_app.models import RealEstateListing, VideoGame, BillingInfo, Invoice, Technology, Project, Programmer, Task
+
+
+
 
 
 

@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 from django.db import models
+from django.db.models import Q, F
 
 from main_app.custom_manager import RealEstateListingManager, VideoGameManager
 from main_app.validators import rating_validator, year_validator
@@ -89,10 +92,16 @@ class Project(models.Model):
     description = models.TextField()
     technologies_used = models.ManyToManyField(Technology, related_name='projects')
 
+    def get_programmers_with_technologies(self):
+        return self.programmers.prefetch_related('projects__technologies_used').all()
+
 
 class Programmer(models.Model):
     name = models.CharField(max_length=100)
     projects = models.ManyToManyField(Project, related_name='programmers')
+
+    def get_projects_with_technologies(self):
+        return self.projects.prefetch_related('technologies_used').all()
 
 
 class Task(models.Model):
@@ -108,6 +117,31 @@ class Task(models.Model):
     is_completed = models.BooleanField(default=False)
     creation_date = models.DateField()
     completion_date = models.DateField()
+
+    @classmethod
+    def ongoing_high_priority_tasks(cls):
+        query = Q(priority='High') & Q(is_completed=False) & Q(completion_date__gt=F('creation_date'))
+        tasks = cls.objects.filter(query)
+        return tasks
+
+    @classmethod
+    def completed_mid_priority_tasks(cls):
+        query = Q(priority='Medium') & Q(is_completed=True)
+        tasks = cls.objects.filter(query)
+        return tasks
+
+    @classmethod
+    def search_tasks(cls, query: str):
+        filter_query = Q(title__icontains=query) | Q(description__icontains=query)
+        tasks = cls.objects.filter(filter_query)
+
+        return tasks
+
+    @classmethod
+    def recent_completed_tasks(cls, days: int):
+        query = Q(is_completed=True) & Q(completion_date__gte=F('creation_date') - timedelta(days=days))
+        tasks = cls.objects.filter(query)
+        return tasks
 
 
 class Exercise(models.Model):
