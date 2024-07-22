@@ -29,3 +29,5 @@ class Review(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     published_on = models.DateTimeField(auto_now_add=True, editable=False)
+
+#test
