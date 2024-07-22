@@ -59,9 +59,9 @@ def get_latest_article():
     article = (Article.objects.all()
                .prefetch_related('authors')
                .annotate(
-                   number_of_reviews=Count('review'),
-                   avg_rating=Avg('review__rating')
-               )
+        number_of_reviews=Count('review'),
+        avg_rating=Avg('review__rating')
+    )
                .order_by('-published_on')
                .first())
 
@@ -76,3 +76,38 @@ def get_latest_article():
             f"Authors: {', '.join(article_authors)}. "
             f"Reviewed: {article.number_of_reviews} times. "
             f"Average Rating: {avg_rating:.2f}.")
+
+
+def get_top_rated_article():
+    top_article = Article.objects.annotate(
+        avg_rating=Avg('review__rating'),
+        review_count=Count('review')
+    ).order_by('-avg_rating', 'title').first()
+
+    if not top_article or not top_article.review_count:
+        return ''
+
+    return (f"The top-rated article is: {top_article.title}, "
+            f"with an average rating of {top_article.avg_rating:.2f}, "
+            f"reviewed {top_article.review_count} times.")
+
+
+def ban_author(email=None):
+    if email is None:
+        return "No authors banned."
+
+    try:
+        author = Author.objects.get(email__exact=email)
+    except Author.DoesNotExist:
+        return 'No authors banned.'
+
+    author.is_banned = True
+    author.save()
+
+    review_count = author.review_set.count()
+    author.review_set.all().delete()
+
+    return f"Author: {author.full_name} is banned! {review_count} reviews deleted."
+
+
+print(ban_author('as@dev.com'))
