@@ -72,3 +72,63 @@ def get_latest_article():
     return result
 
 
+def get_top_rated_article():
+    top_article = (Article.objects.annotate(avg_rating=Avg('review__rating'))
+                   .order_by('-avg_rating', 'title')
+                   .first())
+
+    if not top_article:
+        return ''
+
+    num_of_reviews = Review.objects.filter(article=top_article).count()
+
+    result = (f"The top-rated article is: {top_article.title}, "
+              f"with an average rating of {top_article.avg_rating:.2f}, "
+              f"reviewed {num_of_reviews} times.")
+
+    return result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
