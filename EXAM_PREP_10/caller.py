@@ -104,43 +104,5 @@ def ban_author(email=None):
     result = f"Author: {author.full_name} is banned! {num_of_reviews} reviews deleted."
     return result
 
+
 print(ban_author('as@dev.com'))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
