@@ -1,7 +1,6 @@
 import os
 import django
 
-
 # Set up Django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
@@ -47,6 +46,7 @@ def filter_products():
 
     return '\n'.join(result)
 
+
 def give_discount():
     products_for_discount = (Product.objects.all()
                              .filter(is_available=True, price__gt=3.00)
@@ -60,4 +60,3 @@ def give_discount():
         result.append(f"{p.name}: {p.price}lv.")
 
     return '\n'.join(result)
-
