@@ -1,6 +1,6 @@
 from django.db import models
 
-from main_app.manager import RealEstateListingManager
+from main_app.manager import RealEstateListingManager, VideoGameManager
 
 
 # Create your models here.
@@ -22,6 +22,7 @@ class RealEstateListing(models.Model):
 
     objects = RealEstateListingManager()
 
+
 class VideoGame(models.Model):
     GENRE_CHOICES = [
         ('Action', 'Action'),
@@ -34,10 +35,12 @@ class VideoGame(models.Model):
     title = models.CharField(max_length=100)
     genre = models.CharField(max_length=100, choices=GENRE_CHOICES)
     release_year = models.PositiveIntegerField()
-    rating = models.DecimalField(max_digits=2,decimal_places=1)
+    rating = models.DecimalField(max_digits=2, decimal_places=1)
 
     def __str__(self):
         return self.title
+
+    objects = VideoGameManager()
 
 
 class BillingInfo(models.Model):
@@ -47,6 +50,18 @@ class BillingInfo(models.Model):
 class Invoice(models.Model):
     invoice_number = models.CharField(max_length=20, unique=True)
     billing_info = models.OneToOneField(BillingInfo, on_delete=models.CASCADE)
+
+    @classmethod
+    def get_invoices_with_prefix(cls, prefix: str):
+        return Invoice.objects.filter(invoice_number__startswith=prefix)
+
+    @classmethod
+    def get_invoices_sorted_by_number(cls):
+        return Invoice.objects.order_by('invoice_number')
+
+    @classmethod
+    def get_invoice_with_billing_info(cls, invoice_number: str):
+        return Invoice.objects.get(invoice_number=invoice_number)
 
 
 class Technology(models.Model):
@@ -59,10 +74,20 @@ class Project(models.Model):
     description = models.TextField()
     technologies_used = models.ManyToManyField(Technology, related_name='projects')
 
+    @classmethod
+    def get_programmers_with_technologies(cls):
+        info = Programmer.objects.prefetch_related('projects')
+        return info
+
 
 class Programmer(models.Model):
     name = models.CharField(max_length=100)
     projects = models.ManyToManyField(Project, related_name='programmers')
+
+    @classmethod
+    def get_projects_with_technologies(cls):
+        info = Project.objects.prefetch_related('programmers__projects')
+        return info
 
 
 class Task(models.Model):
