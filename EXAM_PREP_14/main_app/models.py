@@ -15,6 +15,7 @@ class Director(DirectorActorInfo):
 
     objects = DirectorManager()
 
+
 class Actor(DirectorActorInfo, IsAwardedLastUpdated):
     pass
 
