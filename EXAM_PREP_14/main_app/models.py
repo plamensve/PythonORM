@@ -1,6 +1,7 @@
 from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 
+from main_app.manager import DirectorManager
 from main_app.mixins import DirectorActorInfo, IsAwardedLastUpdated
 
 
@@ -12,6 +13,7 @@ class Director(DirectorActorInfo):
         default=0
     )
 
+    objects = DirectorManager()
 
 class Actor(DirectorActorInfo, IsAwardedLastUpdated):
     pass
