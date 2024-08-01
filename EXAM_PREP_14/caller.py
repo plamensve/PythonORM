@@ -110,7 +110,7 @@ def get_top_rated_awarded_movie():
 
     return result
 
-
+print(get_top_rated_awarded_movie())
 
 
 
