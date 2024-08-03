@@ -6,7 +6,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
 from main_app.models import Profile, Product, Order
-from django.db.models import Q, Count
+from django.db.models import Q, Count, F
 
 
 def get_profiles(search_string=None):
@@ -58,4 +58,63 @@ def get_last_sold_products():
 
     product_names = [p.name for p in products]
     return f"Last sold products: {', '.join(product_names)}"
+
+
+def get_top_products():
+    top_products = Product.objects.annotate(num_orders=Count('order')) \
+                       .filter(num_orders__gt=0) \
+                       .order_by('-num_orders', 'name')[:5]
+
+    if top_products:
+        top_products_str = "\n".join(f'{product.name}, sold {product.num_orders} times' for product in top_products)
+        return f"Top products:\n{top_products_str}"
+    return ""
+
+
+def apply_discounts():
+    orders = Order.objects.annotate(num_products=Count('products')).filter(num_products__gt=2, is_completed=False)
+
+    num_of_updated_orders = orders.update(total_price=F('total_price') * 0.9)
+
+    return f"Discount applied to {num_of_updated_orders} orders."
+
+
+def complete_order():
+    order = Order.objects.all().filter(is_completed=False).first()
+    if order is None:
+        return ''
+
+    order.is_completed = True
+    order.save()
+
+    for product in order.products.all():
+        if product.in_stock > 0:
+            product.in_stock -= 1
+
+        if product.in_stock == 0:
+            product.is_available = False
+
+        product.save()
+
+    return "Order has been completed!"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
